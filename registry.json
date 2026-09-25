@@ -4,25 +4,25 @@
             "nombre": "grafico_latencia",
             "descripcion": "Agrega un gráfico en tiempo real para visualizar la latencia de red.",
             "archivo": "grafico_latencia.py",
-            "url_descarga": "https://raw.githubusercontent.com/joakinrd12/NETMonitor/main/plugins/grafico_latencia.py"
+            "url_descarga": "https://raw.githubusercontent.com/joakinrd12/NETMonitor/plugins-repo/plugins/grafico_latencia.py"
         },
         {
             "nombre": "tema_cyberpunk",
             "descripcion": "Instala un paquete de diseño visual con colores neón futuristas y circuitos.",
             "archivo": "tema_cyberpunk.py",
-            "url_descarga": "https://raw.githubusercontent.com/joakinrd12/NETMonitor/main/plugins/tema_cyberpunk.py"
+            "url_descarga": "https://raw.githubusercontent.com/joakinrd12/NETMonitor/plugins-repo/plugins/tema_cyberpunk.py"
         },
         {
             "nombre": "escaner_puertos",
             "descripcion": "Agrega una herramienta de auditoría para escanear puertos TCP abiertos.",
             "archivo": "escaner_puertos.py",
-            "url_descarga": "https://raw.githubusercontent.com/joakinrd12/NETMonitor/main/plugins/escaner_puertos.py"
+            "url_descarga": "https://raw.githubusercontent.com/joakinrd12/NETMonitor/plugins-repo/plugins/escaner_puertos.py"
         },
         {
             "nombre": "traceroute_map",
             "descripcion": "Agrega una herramienta de diagnóstico para mapear los saltos de red de una IP.",
             "archivo": "traceroute_map.py",
-            "url_descarga": "https://raw.githubusercontent.com/joakinrd12/NETMonitor/main/plugins/traceroute_map.py"
+            "url_descarga": "https://raw.githubusercontent.com/joakinrd12/NETMonitor/plugins-repo/plugins/traceroute_map.py"
         }
     ]
 }
