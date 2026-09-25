@@ -5,6 +5,12 @@
             "descripcion": "Agrega un gráfico en tiempo real para visualizar la latencia de red.",
             "archivo": "grafico_latencia.py",
             "url_descarga": "https://raw.githubusercontent.com/joakinrd12/NETMonitor/main/plugins/grafico_latencia.py"
+        },
+        {
+            "nombre": "tema_cyberpunk",
+            "descripcion": "Instala un paquete de diseño visual con colores neón futuristas.",
+            "archivo": "tema_cyberpunk.py",
+            "url_descarga": "https://raw.githubusercontent.com/joakinrd12/NETMonitor/main/plugins/tema_cyberpunk.py"
         }
     ]
 }
