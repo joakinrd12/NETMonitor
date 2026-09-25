@@ -9,7 +9,7 @@ def crear_tarjeta(app):
     lbl_ascii = ctk.CTkLabel(tarjeta, text=ascii_logo, text_color="#ff003c", font=ctk.CTkFont(family="Consolas", size=11, weight="bold"))
     lbl_ascii.pack(anchor="w", padx=15, pady=(5, 2))
     
-    lbl_desc = ctk.CTkLabel(tarjeta, text="Genera un patrón de circuitos de red en el fondo y estilo 2077.", text_color="#a0a0a0", font=ctk.CTkFont(size=10))
+    lbl_desc = ctk.CTkLabel(tarjeta, text="Genera circuitos de red en el fondo y estilo 2077 en botones.", text_color="#a0a0a0", font=ctk.CTkFont(size=10))
     lbl_desc.pack(anchor="w", padx=15, pady=(0, 10))
     
     btn_aplicar = ctk.CTkButton(
@@ -31,13 +31,12 @@ def aplicar_estilo_2077(app):
         if not hasattr(app, "canvas_circuitos"):
             app.canvas_circuitos = tk.Canvas(app, bg="#08080c", highlightthickness=0)
             app.canvas_circuitos.place(x=0, y=0, relwidth=1, relheight=1)
-            app.canvas_circuitos.lower() # Enviar detrás de todos los elementos
             
             w = app.winfo_width() or 1000
             h = app.winfo_height() or 700
             
             # Dibujar líneas de circuitos estilo placa madre / red cyberpunk en los espacios vacíos
-            for _ in range(40):
+            for _ in range(45):
                 x1 = random.randint(30, w - 30)
                 y1 = random.randint(30, h - 30)
                 x2 = x1 + random.choice([-180, -100, -50, 50, 100, 180])
@@ -46,10 +45,15 @@ def aplicar_estilo_2077(app):
                 y3 = y2 + random.choice([-120, -60, 60, 120])
                 
                 # Líneas de circuito en rojo oscuro de fondo
-                app.canvas_circuitos.create_line(x1, y1, x2, y2, x3, y3, fill="#1f0208", width=2)
+                app.canvas_circuitos.create_line(x1, y1, x2, y2, x3, y3, fill="#1a0206", width=2)
                 # Nodos o puntos brillantes de conexión
                 app.canvas_circuitos.create_oval(x1-2, y1-2, x1+2, y1+2, fill="#ff003c", outline="")
                 app.canvas_circuitos.create_oval(x3-2, y3-2, x3+2, y3+2, fill="#ff003c", outline="")
+
+            # Elevar todos los demás widgets de la app para que queden por encima del fondo
+            for widget in app.winfo_children():
+                if widget != app.canvas_circuitos:
+                    widget.lift()
 
         # 3. Recorrer widgets para estilizar tarjetas y actualizar botones con emojis 2077
         def actualizar_recursivo(widget):
