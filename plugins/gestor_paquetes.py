@@ -1,51 +1,71 @@
 import os
 import json
 import urllib.request
+import urllib.error
 import customtkinter as ctk
 
 def crear_tarjeta(app):
     tarjeta = app.agregar_tarjeta_dashboard("📦 Gestor de Paquetes (Tienda)")
     
-    global lbl_estado_gp
-    lbl_estado_gp = ctk.CTkLabel(tarjeta, text="● Estado: Listo para buscar actualizaciones", text_color="green", font=ctk.CTkFont(size=11, weight="bold"))
+    global lbl_estado_gp, frame_plugins
+    lbl_estado_gp = ctk.CTkLabel(tarjeta, text="● Estado: Catálogo sincronizado", text_color="#00ff66", font=ctk.CTkFont(size=11, weight="bold"))
     lbl_estado_gp.pack(anchor="w", padx=15, pady=2)
     
-    # Cuadro de texto para mostrar los plugins disponibles en el registry
-    global txt_disponibles
-    txt_disponibles = ctk.CTkTextbox(tarjeta, width=400, height=90)
-    txt_disponibles.pack(padx=15, pady=5)
+    # Contenedor donde se listarán dinámicamente los plugins disponibles
+    frame_plugins = ctk.CTkScrollableFrame(tarjeta, width=420, height=140, fg_color="#100e14")
+    frame_plugins.pack(padx=15, pady=5)
     
-    # Cargar la lista al iniciar la tarjeta
+    # Cargar el catálogo dinámico
     cargar_catalogo()
-    
-    # Botón para instalar el gráfico de latencia de prueba
-    btn_instalar = ctk.CTkButton(tarjeta, text="Instalar Gráfico de Latencia", fg_color="#2b8a3e", hover_color="#2b7034", command=lambda: instalar_plugin("grafico_latencia"))
-    btn_instalar.pack(anchor="w", padx=15, pady=10)
 
 def cargar_catalogo():
+    # Limpiar frame por si se recarga
+    for widget in frame_plugins.winfo_children():
+        widget.destroy()
+        
     try:
-        # Leer el registry.json local
         if os.path.exists("registry.json"):
             with open("registry.json", "r", encoding="utf-8") as f:
                 data = json.load(f)
                 
-            txt_disponibles.delete("0.0", "end")
-            texto_catalogo = "Plugins disponibles en el repositorio:\n\n"
-            for p in data.get("plugins_disponibles", []):
-                texto_catalogo += f"• {p['nombre']}: {p['descripcion']}\n"
-            txt_disponibles.insert("0.0", texto_catalogo)
+            plugins = data.get("plugins_disponibles", [])
+            if not plugins:
+                lbl = ctk.CTkLabel(frame_plugins, text="No hay plugins en el registro.", text_color="#a0a0a0")
+                lbl.pack(padx=5, pady=5)
+                return
+                
+            for p in plugins:
+                nombre = p["nombre"]
+                desc = p["descripcion"]
+                
+                # Fila para cada plugin
+                fila = ctk.CTkFrame(frame_plugins, fg_color="#18151f")
+                fila.pack(fill="x", padx=5, pady=5, ipadx=5, ipady=5)
+                
+                lbl_info = ctk.CTkLabel(fila, text=f"📌 {nombre}\n{desc}", font=ctk.CTkFont(size=10), justify="left", text_color="#e0e0e0")
+                lbl_info.pack(side="left", padx=5, anchor="w")
+                
+                btn_inst = ctk.CTkButton(
+                    fila, 
+                    text="📥 Instalar", 
+                    width=90, 
+                    height=28,
+                    fg_color="#990000", 
+                    hover_color="#ff0033",
+                    command=lambda n=nombre: instalar_plugin(n)
+                )
+                btn_inst.pack(side="right", padx=5)
         else:
-            txt_disponibles.delete("0.0", "end")
-            txt_disponibles.insert("0.0", "No se encontró el archivo registry.json en la raíz.")
+            lbl = ctk.CTkLabel(frame_plugins, text="Error: Falta el archivo registry.json", text_color="#ff4444")
+            lbl.pack(padx=5, pady=5)
     except Exception as e:
-        txt_disponibles.delete("0.0", "end")
-        txt_disponibles.insert("0.0", f"Error leyendo el registro: {e}")
+        lbl = ctk.CTkLabel(frame_plugins, text=f"Error leyendo registro: {e}", text_color="#ff4444")
+        lbl.pack(padx=5, pady=5)
 
 def instalar_plugin(nombre_plugin):
     try:
-        lbl_estado_gp.configure(text=f"● Descargando {nombre_plugin}...", text_color="orange")
+        lbl_estado_gp.configure(text=f"● Descargando {nombre_plugin} desde GitHub...", text_color="orange")
         
-        # Leer el link de descarga desde el registry.json
         with open("registry.json", "r", encoding="utf-8") as f:
             data = json.load(f)
             
@@ -61,10 +81,12 @@ def instalar_plugin(nombre_plugin):
             lbl_estado_gp.configure(text="● Error: Plugin no encontrado en el registro", text_color="red")
             return
             
-        # Descargar el archivo usando urllib (nativo de Python)
+        # Descarga mediante urllib
         urllib.request.urlretrieve(url_a_descargar, archivo_destino)
         
-        lbl_estado_gp.configure(text=f"● ¡Instalado con éxito! Reinicia la app.", text_color="green")
+        lbl_estado_gp.configure(text=f"● ¡{nombre_plugin} instalado! Reinicia la app.", text_color="#00ff66")
         
+    except urllib.error.HTTPError as e:
+        lbl_estado_gp.configure(text=f"● Error HTTP {e.code}: Sube el archivo a GitHub.", text_color="red")
     except Exception as e:
         lbl_estado_gp.configure(text=f"● Error al instalar: {e}", text_color="red")
