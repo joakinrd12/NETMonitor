@@ -1,0 +1,10 @@
+{
+    "plugins_disponibles": [
+        {
+            "nombre": "grafico_latencia",
+            "descripcion": "Agrega un gráfico en tiempo real para visualizar la latencia de red.",
+            "archivo": "grafico_latencia.py",
+            "url_descarga": "https://raw.githubusercontent.com/joakinrd12/NETMonitor/main/plugins/grafico_latencia.py"
+        }
+    ]
+}
