@@ -10,7 +10,7 @@ def crear_tarjeta(app):
     lbl_info.pack(anchor="w", padx=15, pady=(5, 2))
     
     global entry_trace_ip
-    entry_trace_ip = ctk.CTkEntry(tarjeta, placeholder_text="Ej: google.com o 1.1.1.1", width=220, fg_color="#08080c", border_color="#550011")
+    entry_trace_ip = ctk.CTkEntry(tarjeta, placeholder_text="Ej: google.com o 8.8.8.8", width=220, fg_color="#08080c", border_color="#550011")
     entry_trace_ip.pack(anchor="w", padx=15, pady=5)
     
     global txt_resultados_trace
@@ -35,22 +35,21 @@ def iniciar_hilo_traceroute():
         return
         
     txt_resultados_trace.delete("0.0", "end")
-    txt_resultados_trace.insert("0.0", f"[*] Analizando ruta de saltos hacia {destino}...\n")
+    txt_resultados_trace.insert("0.0", f"[*] Analizando ruta de saltos hacia {destino}...\nPor favor espere unos segundos...\n")
     
     hilo = threading.Thread(target=ejecutar_traceroute, args=(destino,))
     hilo.daemon = True
     hilo.start()
 
 def ejecutar_traceroute(destino):
-    # Detectar el sistema operativo para usar el comando correcto (tracert en Windows, traceroute en Linux/Mac)
-    parametro_so = "-n" if platform.system().lower() == "windows" else "-m"
+    # Comando limpio según el sistema operativo sin argumentos conflictivos
     comando = "tracert" if platform.system().lower() == "windows" else "traceroute"
     
     try:
-        proceso = subprocess.Popen([comando, parametro_so, destino], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
-        salida, error = proceso.communicate(timeout=30)
+        proceso = subprocess.Popen([comando, destino], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+        salida, error = proceso.communicate(timeout=40)
         
-        if proceso.returncode == 0 or salida:
+        if salida:
             resultado_final = f"[*] Ruta completada a {destino}:\n\n" + salida
         else:
             resultado_final = f"[!] Error en el rastreo: {error}"
