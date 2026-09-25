@@ -17,6 +17,12 @@
             "descripcion": "Agrega una herramienta de auditoría para escanear puertos TCP abiertos.",
             "archivo": "escaner_puertos.py",
             "url_descarga": "https://raw.githubusercontent.com/joakinrd12/NETMonitor/main/plugins/escaner_puertos.py"
+        },
+        {
+            "nombre": "traceroute_map",
+            "descripcion": "Agrega una herramienta de diagnóstico para mapear los saltos de red de una IP.",
+            "archivo": "traceroute_map.py",
+            "url_descarga": "https://raw.githubusercontent.com/joakinrd12/NETMonitor/main/plugins/traceroute_map.py"
         }
     ]
 }
